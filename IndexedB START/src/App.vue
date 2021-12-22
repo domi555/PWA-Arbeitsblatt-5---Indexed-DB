@@ -106,6 +106,12 @@
         <button class="btn btn-primary" @click="getFriendsWithAge">Get!</button>
       </div>
     </div>
+    <ul class="mt-3 pl-1">
+      <li v-for="friend of friendsWithAge" :key="friend.id" class="fw-bold">
+        Found: {{ friend.name.first }} {{ friend.name.last }},
+        {{ friend.age }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -229,7 +235,6 @@ export default {
         'age',
         range,
       );
-      console.log(friendsWithAge);
     },
   },
 };
