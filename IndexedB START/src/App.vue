@@ -103,9 +103,7 @@
         <input v-model="toAge" class="form-control" type="number" />
       </div>
       <div class="col-1">
-        <button class="btn btn-primary" @click="getFriendsWithAge">
-          Get!
-        </button>
+        <button class="btn btn-primary" @click="getFriendsWithAge">Get!</button>
       </div>
     </div>
   </div>
@@ -169,6 +167,7 @@ export default {
       newName: 'Cerny',
       fromAge: null,
       toAge: null,
+      friendsWithAge: [],
     };
   },
   async created() {
@@ -224,10 +223,13 @@ export default {
       }
     },
     async getFriendsWithAge() {
-      await this.db.getAllFromIndex('friends', 'age', [
-        Number(this.fromAge),
-        Number(this.toAge),
-      ]);
+      const range = IDBKeyRange.bound(Number(this.fromAge), Number(this.toAge));
+      this.friendsWithAge = await this.db.getAllFromIndex(
+        'friends',
+        'age',
+        range,
+      );
+      console.log(friendsWithAge);
     },
   },
 };
