@@ -58,7 +58,7 @@
         />
       </div>
       <div class="col-1">
-        <button class="ms-3 btn btn-primary">Find!</button>
+        <button class="ms-3 btn btn-primary" @click="findFriend">Find!</button>
       </div>
       <div class="col-3">
         <div v-if="searchResult && friend != null">
@@ -86,7 +86,7 @@
         <input v-model="newName" class="form-control" type="text" />
       </div>
       <div class="col-1">
-        <button class="btn btn-primary">Change!</button>
+        <button class="btn btn-primary" @click="updateFriend">Change!</button>
       </div>
     </div>
   </div>
@@ -155,7 +155,8 @@ export default {
 
     this.db = await openDB('friendsDB1', 1, {
       upgrade(db) {
-        db.createObjectStore('friends', { keyPath: 'id' });
+        const store = db.createObjectStore('friends', { keyPath: 'id' });
+        store.createIndex('lastname', 'name.last', { unique: true });
       },
     });
 
@@ -182,6 +183,20 @@ export default {
     async removeFriend(friend) {
       await this.db.delete('friends', friend.id);
       await this.getStoredFriends();
+    },
+    async findFriend() {
+      this.friend = await this.db.get('friends', Number(this.id));
+      this.searchResult = true;
+    },
+    async updateFriend() {
+      const tx = this.db.transaction('friends', 'readwrite');
+      const index = tx.store.index('lastname');
+      const obj = await index.get(this.oldName);
+      await tx.done;
+
+      obj.name.last = this.newName;
+
+      await this.db.put('friends', obj);
     },
   },
 };
