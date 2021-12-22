@@ -89,6 +89,25 @@
         <button class="btn btn-primary" @click="updateFriend">Change!</button>
       </div>
     </div>
+    <div class="mt-3 row align-items-center">
+      <div class="col-1">
+        <span>From Age:</span>
+      </div>
+      <div class="col-2">
+        <input v-model="fromAge" class="form-control" type="number" />
+      </div>
+      <div class="col-1">
+        <span>To Age:</span>
+      </div>
+      <div class="col-2">
+        <input v-model="toAge" class="form-control" type="number" />
+      </div>
+      <div class="col-1">
+        <button class="btn btn-primary" @click="getFriendsWithAge">
+          Get!
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -148,15 +167,18 @@ export default {
       storedFriends: [],
       oldName: 'Bridges',
       newName: 'Cerny',
+      fromAge: null,
+      toAge: null,
     };
   },
   async created() {
     if (!window.indexedDB) alert('IndexedDB is not available!');
 
-    this.db = await openDB('friendsDB1', 1, {
+    this.db = await openDB('friendsDB', 1, {
       upgrade(db) {
         const store = db.createObjectStore('friends', { keyPath: 'id' });
         store.createIndex('lastname', 'name.last', { unique: true });
+        store.createIndex('age', 'age');
       },
     });
 
@@ -194,9 +216,18 @@ export default {
       const obj = await index.get(this.oldName);
       await tx.done;
 
-      obj.name.last = this.newName;
+      if (obj) {
+        obj.name.last = this.newName;
+        await this.db.put('friends', obj);
 
-      await this.db.put('friends', obj);
+        this.getStoredFriends();
+      }
+    },
+    async getFriendsWithAge() {
+      await this.db.getAllFromIndex('friends', 'age', [
+        Number(this.fromAge),
+        Number(this.toAge),
+      ]);
     },
   },
 };
