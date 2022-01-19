@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const webpush = require('web-push');
 require('dotenv').config();
 
-const { getEmployees } = require('../model/employees');
+const { getEmployees, deleteEmployees } = require('../model/employees');
 
 const router = express.Router();
 
@@ -11,6 +11,13 @@ router.get(
   '/employees',
   asyncHandler(async (req, res) => {
     res.json(getEmployees());
+  }),
+);
+
+router.delete(
+  '/employees/:id',
+  asyncHandler(async (req, res) => {
+    res.json(deleteEmployees(req.params.id));
   }),
 );
 

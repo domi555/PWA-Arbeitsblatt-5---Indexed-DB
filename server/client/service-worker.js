@@ -1,4 +1,4 @@
-importScripts("/precache-manifest.82e88870ee3827902f9f17d64064411e.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/precache-manifest.a5a019a8d86347cbbf1ddd1cdf398ea1.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 /* global workbox */
 
@@ -10,12 +10,12 @@ if (workbox) {
   workbox.precaching.precacheAndRoute(self.__precacheManifest);
 
   // 7) NetworkFirst, 8) CacheFirst
-  workbox.routing.registerRoute(
-    '/employees',
-    new workbox.strategies.CacheFirst({
-      cacheName: 'dominiks-cache',
-    }),
-  );
+  // workbox.routing.registerRoute(
+  //   '/employees',
+  //   new workbox.strategies.CacheFirst({
+  //     cacheName: 'dominiks-cache',
+  //   }),
+  // );
 
   // 9) Nur das App Frame wird normalerweise gecached, /employees mit CacheFirst und /images/* muss auch noch gecached werden.
   workbox.routing.registerRoute(

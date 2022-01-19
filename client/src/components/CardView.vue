@@ -21,8 +21,7 @@
             <p class="card-text">Phone: {{ e.phone }}</p>
           </div>
           <button
-            v-if="!offline"
-            @click="$emit('del', e)"
+            @click="$emit('del', e.id)"
             class="btn btn-outline-danger mx-auto d-block mt-3"
           >
             Delete
@@ -41,9 +40,6 @@ export default {
     },
     serverAddress: {
       type: String,
-    },
-    offline: {
-      type: Boolean,
     },
   },
 };

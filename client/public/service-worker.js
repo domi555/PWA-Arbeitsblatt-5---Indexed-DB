@@ -8,12 +8,12 @@ if (workbox) {
   workbox.precaching.precacheAndRoute(self.__precacheManifest);
 
   // 7) NetworkFirst, 8) CacheFirst
-  workbox.routing.registerRoute(
-    '/employees',
-    new workbox.strategies.CacheFirst({
-      cacheName: 'dominiks-cache',
-    }),
-  );
+  // workbox.routing.registerRoute(
+  //   '/employees',
+  //   new workbox.strategies.CacheFirst({
+  //     cacheName: 'dominiks-cache',
+  //   }),
+  // );
 
   // 9) Nur das App Frame wird normalerweise gecached, /employees mit CacheFirst und /images/* muss auch noch gecached werden.
   workbox.routing.registerRoute(
